@@ -1,0 +1,10 @@
+.nav-item{
+  margin: 2px 1px;
+  padding: 0px 5px;
+  border-radius: 3px;
+  text-align: center;
+}
+
+.nav-item:hover, .navbar-toggler:hover, .active, .dropdown-item:hover{
+  background-color: rgba(255,255,255, 0.15);
+}
