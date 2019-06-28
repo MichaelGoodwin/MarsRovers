@@ -1,0 +1,25 @@
+.jumbotron-container{
+  min-height: 40vh;
+  background-color: black;
+  background: url("../../assets/mars_surface_dust.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  margin-bottom: 25px;
+  display: flex;
+
+  .jumbotron{
+    background-color: rgba(0, 0, 0, 0.35);
+    width: 100%;
+    min-height: 100%;
+    margin-bottom: 0px;
+    border-radius: 0%;
+  }
+}
+
+.row{
+  margin-bottom: 25px;
+
+  .img-thumbnail{
+    max-height: 250px;
+  }
+}
