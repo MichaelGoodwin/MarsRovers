@@ -1,5 +1,6 @@
 /* tslint:disable:variable-name */
 import { PhotoCamera } from './PhotoCamera';
+import { Rover } from './Rover';
 
 export class Photo {
   constructor(
