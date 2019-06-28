@@ -1,14 +1,27 @@
-.jumbotron-container{
-  min-height: 40vh;
-  background-color: black;
+.background{
   background: url("../../assets/mars_surface_dust.jpg");
   background-repeat: no-repeat;
   background-size: cover;
+  height: 100%;
+  width: 100%;
+  display: table;
+}
+
+.wrapper{
+  background-color: rgba(0, 0, 0, 0.35);
+  width: 100%;
+  min-height: 100%;
+  margin-bottom: 0px;
+  border-radius: 0%;
+  display: table-cell;
+}
+
+.jumbotron-container{
   margin-bottom: 25px;
   display: flex;
 
   .jumbotron{
-    background-color: rgba(0, 0, 0, 0.35);
+    background-color: transparent;
     width: 100%;
     min-height: 100%;
     margin-bottom: 0px;
@@ -16,10 +29,34 @@
   }
 }
 
-.row{
-  margin-bottom: 25px;
+.rovers{
+  max-width: 100%;
+  padding-right: 5vw;
+  padding-left: 5vw;
 
-  .img-thumbnail{
-    max-height: 250px;
+  .row{
+    padding-bottom: 15px;
+    div{
+      margin: 0px;
+      padding: 3px;
+    }
+
+    .img-thumbnail{
+      max-height: 40vh;
+    }
+  }
+
+  .thumbnail{
+    background-color: rgba(0, 0, 0, 0.35);
+    min-height: 100%;
+    border-radius: 8px;
+    padding: 1px;
+    transition-duration: .5s;
+
+    &:hover{
+      background-color: rgba(0, 0, 0, 0.7);
+      transition-duration: .5s;
+      cursor: pointer;
+    }
   }
 }
