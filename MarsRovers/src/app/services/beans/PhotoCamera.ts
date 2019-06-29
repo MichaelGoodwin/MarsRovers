@@ -1,10 +1,8 @@
 /* tslint:disable:variable-name */
 
-export class PhotoCamera {
-  constructor(
-    private id: number,
-    private name: string,
-    private rover_id: number,
-    private full_name: string
-  ) { }
+export interface PhotoCamera {
+  id: number;
+  name: string;
+  rover_id: number;
+  full_name: string;
 }

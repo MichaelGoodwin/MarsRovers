@@ -1,8 +1,6 @@
 /* tslint:disable:variable-name */
 
-export class RoverCamera {
-  constructor(
-    private name: string,
-    private full_name: string
-  ) { }
+export interface RoverCamera {
+  name: string;
+  full_name: string;
 }
