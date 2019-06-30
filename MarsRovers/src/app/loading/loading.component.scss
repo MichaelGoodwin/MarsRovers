@@ -4,6 +4,10 @@
   min-height: 100%;
   overflow: hidden;
   background: rgba(black, .5);
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 9999;
 }
 
 .mars{
@@ -19,6 +23,5 @@
   50%{
     transform: scale(.75);
     transform-origin: 50% 50%;
-    transform: scale3d(1);
   }
 }
