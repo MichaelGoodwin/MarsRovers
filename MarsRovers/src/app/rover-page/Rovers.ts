@@ -9,7 +9,7 @@ export const Rovers = {
     RoverCameras.CURIOSITY,
     '<b>Curiosity</b> is a car-sized rover designed to explore the crater Gale on Mars as part of NASA\'s Mars Science Laboratory mission (MSL). The rover is responsible for investigating the Martian climate and geology as well as assessing whether the selected field site inside Gale has ever offered environmental conditions favorable for microbial life. In December of 2012 Curiosity\'s two-year mission was extended indefinitely.'),
   OPPORTUNITY:  new RoverPage('Opportunity',
-    '../../assets/opportunity_600_600.png',
+    '../../assets/oppy_600_600.png',
     'https://en.wikipedia.org/wiki/Opportunity_(rover)',
     RoverCameras.OPPORTUNITY,
     '<b>Opportunity</b>, nicknamed <b>Oppy</b>, is a robotic rover that was launched as part of NASA\s Mars Exploration Rover (MER) program and landed in Meridiani Planum on January 25, 2004. The MER program was originally designed to determine the potential for life to exist on mars, prepare for potential human missions to mars, and characterize the Martian climate and geology. After the initial 90 day mission Oppy continued to explore the martian terrian and is considered one of NASA\'s most successful ventures.'),

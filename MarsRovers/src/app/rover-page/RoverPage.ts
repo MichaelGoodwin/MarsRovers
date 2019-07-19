@@ -8,6 +8,6 @@ export class RoverPage {
     public image: string,
     public wikiLink: string,
     public cameras: RoverCamera[],
-    public descripition: string
+    public description: string
   ) { }
 }
