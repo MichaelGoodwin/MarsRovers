@@ -26,15 +26,24 @@ export class RoverPageComponent implements OnInit, OnDestroy {
     private router: Router,
     private nasaApiService: NasaApiService
   ) {
-    const id = this.route.snapshot.paramMap.get('id').toUpperCase();
+    this.route.params.subscribe(params => {
+      this.handleRouteChange(params);
+    });
+  }
+
+  private handleRouteChange(params): void {
+    const id = params.id.toUpperCase();
     if (!(id in Rovers)) {
       this.router.navigate(['/']);
       return;
     }
+
     this.rover = Rovers[id];
+    this.getRoverData();
   }
 
-  ngOnInit(): void {
+  private getRoverData(): void {
+    this.loading = true;
     this.manifestSub = this.nasaApiService.getRoverManifest(this.rover.name).pipe(
       catchError(err => {
         console.log(err);
@@ -57,6 +66,14 @@ export class RoverPageComponent implements OnInit, OnDestroy {
         console.log('Completed photos');
       }
     );
+  }
+
+  ngOnInit(): void {
+    if (this.rover === undefined) {
+      this.router.navigate(['/']);
+      return;
+    }
+    // the route.params subscribe should trigger the initial getRoverDate as well
   }
 
   ngOnDestroy(): void {
