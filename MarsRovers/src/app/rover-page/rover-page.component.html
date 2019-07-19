@@ -1,0 +1,51 @@
+<app-loading class="wrapper" [flag]="loading" [delay]="300"></app-loading>
+
+
+<div *ngIf="!loading" class="wrapper text-center">
+  <!-- Rover information Section -->
+  <div class="row rover-info">
+    <div class="col-sm-12 text-center">
+      <h1>{{ manifest.name }} Rover</h1>
+      <div class="img-container">
+        <img src="{{rover.image}}" class="rover img-thumbnail" alt="{{manifest.name}} rover image">
+        <div class="manifest-container">
+          <div class="manifest-info">
+            <p><b>Launched:</b> {{ nasaApiService.getDateFromNasaDate(manifest.launch_date) | date }}</p>
+            <p><b>Landed:</b> {{ nasaApiService.getDateFromNasaDate(manifest.landing_date) | date }}</p>
+          </div>
+          <div class="manifest-info">
+            <p><b>Latest Photo:</b> {{ nasaApiService.getDateFromNasaDate(manifest.max_date) | date }}</p>
+            <p><b>Photos Taken:</b> {{ manifest.total_photos }}</p>
+          </div>
+          <div class="manifest-info">
+            <p><b>Days on Mars:</b> {{ earthDaysOnMars() }}</p>
+            <p><b>Sols on Mars:</b> {{ manifest.max_sol }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-12 text-center">
+      <div class="description-container">
+        <h5>Status: {{ manifest.status == "active" ? "Exploring Mars" : "Enjoying retirement"}}</h5>
+        <p [innerHTML]="rover.description"></p>
+        <a class="btn btn-secondary" target="_blank" href="{{rover.wiki_link}}">View Wikipedia article</a>
+      </div>
+    </div>
+    <div class="col-sm-12">
+      <hr/>
+    </div>
+  </div>
+  
+  <!-- Rover photo gallery -->
+  <div class="row photo-gallery">
+    <div class="col-sm-12">
+      <h1>Rover Photos</h1>
+      <div class="image-gallery">
+        <div class="image-container" *ngFor="let photo of photos">
+          <img src="{{photo.img_src}}"/>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -9,13 +9,15 @@ import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { HomeComponent } from './home/home.component';
 import { LoadingComponent } from './loading/loading.component';
+import { RoverPageComponent } from './rover-page/rover-page.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
     HomeComponent,
-    LoadingComponent
+    LoadingComponent,
+    RoverPageComponent
   ],
   imports: [
     BrowserModule,
