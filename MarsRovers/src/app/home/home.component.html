@@ -1,37 +1,33 @@
-<div class="background">
-  <div class="wrapper">
-    <div class="jumbotron-container">
-      <div class="jumbotron text-white text-center">
-        <div class="container">
-          <h1 class="display-4">Mars Rovers</h1>
-          <p class="lead">Dedicated to the rovers exploring Mars and the images they take</p>
-          <p>We use the official <a href="https://api.nasa.gov/" target="_blank">NASA APIs</a> to display data, you can view the official NASA Mars page <a href="https://mars.nasa.gov/" target="_blank">here</a></p>
-        </div>
+<div class="jumbotron-container">
+  <div class="jumbotron text-white text-center">
+    <div class="container">
+      <h1 class="display-4">Mars Rovers</h1>
+      <p class="lead">Dedicated to the rovers exploring Mars and the images they take</p>
+      <p>We use the official <a href="https://api.nasa.gov/" target="_blank">NASA APIs</a> to display data, you can view the official NASA Mars page <a href="https://mars.nasa.gov/" target="_blank">here</a></p>
+    </div>
+  </div>
+</div>
+
+<div class="rovers container">
+  <div class="row">
+    <div class="col-xs-12 col-md-4">
+      <div class="thumbnail text-center" [routerLink]="['/rover/opportunity']">
+        <h3>Opportunity</h3>
+        <img src="../../assets/oppy_600_600.png" class="img-thumbnail" alt="Opportunity rover image" />
       </div>
     </div>
 
-    <div class="rovers container">
-      <div class="row">
-        <div class="col-xs-12 col-md-4">
-          <div class="thumbnail text-center" [routerLink]="['/rover/opportunity']">
-            <h3>Opportunity</h3>
-            <img src="../../assets/oppy_600_600.png" class="img-thumbnail" alt="Opportunity rover image" />
-          </div>
-        </div>
-
-        <div class="col-xs-12 col-md-4">
-          <div class="thumbnail text-center" [routerLink]="['/rover/curiosity']">
-            <h3>Curiosity</h3>
-            <img src="../../assets/curiosity_600_600.png" class="img-thumbnail" alt="Curiosity rover image">
-          </div>
-        </div>
-      
-        <div class="col-xs-12 col-md-4">
-          <div class="thumbnail text-center" [routerLink]="['/rover/spirit']">
-            <h3>Spirit</h3>
-            <img src="../../assets/spirit_600_600.png" class="img-thumbnail" alt="Spirit rover image" />
-          </div>
-        </div>
+    <div class="col-xs-12 col-md-4">
+      <div class="thumbnail text-center" [routerLink]="['/rover/curiosity']">
+        <h3>Curiosity</h3>
+        <img src="../../assets/curiosity_600_600.png" class="img-thumbnail" alt="Curiosity rover image">
+      </div>
+    </div>
+  
+    <div class="col-xs-12 col-md-4">
+      <div class="thumbnail text-center" [routerLink]="['/rover/spirit']">
+        <h3>Spirit</h3>
+        <img src="../../assets/spirit_600_600.png" class="img-thumbnail" alt="Spirit rover image" />
       </div>
     </div>
   </div>
