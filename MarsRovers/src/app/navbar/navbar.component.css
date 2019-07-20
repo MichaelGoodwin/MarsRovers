@@ -5,6 +5,11 @@
   text-align: center;
 }
 
-.nav-item:hover, .navbar-toggler:hover, .active, .dropdown-item:hover{
+.nav-item:hover, .navbar-toggler:hover, .active, .dropdown-item:hover, .navbar-brand:hover{
   background-color: rgba(255,255,255, 0.15);
+}
+
+.navbar-brand{
+  padding: 5px 5px;
+  border-radius: 3px;
 }

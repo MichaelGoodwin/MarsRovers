@@ -8,10 +8,10 @@
   <div class="collapse navbar-collapse bg-dark" id="navbarSupportedContent">
     <ul class="navbar-nav mx-auto">
       <li class="d-none d-md-block">
-          <span class="navbar-brand pointer" routerLink="['/']">Mars Rovers</span>
+          <a class="navbar-brand pointer" routerLink="/">Mars Rovers</a>
       </li>
-      <li class="nav-item" [routerLinkActive]="['active']">
-        <a class="nav-link" [routerLink]="['/']">Home</a>
+      <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+        <a class="nav-link" routerLink="/">Home</a>
       </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" id="dropdownMenuButton" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
