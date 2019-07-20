@@ -29,7 +29,7 @@
       <div class="description-container">
         <h5>Status: {{ manifest.status == "active" ? "Exploring Mars" : "Enjoying retirement"}}</h5>
         <p [innerHTML]="rover.description"></p>
-        <a class="btn btn-secondary" target="_blank" href="{{rover.wiki_link}}">View Wikipedia article</a>
+        <a class="btn btn-secondary" target="_blank" [href]="rover.wikiLink">View Wikipedia article</a>
       </div>
     </div>
     <div class="col-sm-12">
@@ -42,8 +42,8 @@
     <div class="col-sm-12">
       <h1>Rover Photos</h1>
       <div class="image-gallery">
-        <div class="image-container" *ngFor="let photo of photos">
-          <img src="{{photo.img_src}}"/>
+        <div class="image-container" *ngFor="let photo of album; let i=index">
+          <img [src]="photo.src" (click)="open(i)"/>
         </div>
       </div>
     </div>

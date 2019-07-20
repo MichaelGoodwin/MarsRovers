@@ -21,16 +21,17 @@
 
 .row{
   max-width: 100%;
+  margin: 0 0;
 }
 
 .rover-info{
-  background: url('../../assets/mars_surface_dust.jpg') no-repeat;
+  background: url('../../assets/mars_surface_dust_black.png') no-repeat;
   background-size: cover;
+  min-height: 100vh;
 }
 
 .photo-gallery{
-  //background: url('../../../assets/mars_surface_dust.jpg');
-  background-size: cover;
+  background: #1f1f1f;
 }
 
 .image-gallery{
