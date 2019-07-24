@@ -28,6 +28,10 @@
   background: url('../../assets/mars_surface_dust_black.png') no-repeat;
   background-size: cover;
   min-height: 100vh;
+
+  // apply negative margin and offset it with padding to offset background image to match default image
+  margin-top: -60px;
+  padding-top: 60px;
 }
 
 .photo-gallery{
