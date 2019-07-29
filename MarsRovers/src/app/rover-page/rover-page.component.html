@@ -40,12 +40,60 @@
   <!-- Rover photo gallery -->
   <div class="row photo-gallery">
     <div class="col-sm-12">
-      <h1>Rover Photos</h1>
-      <div class="image-gallery">
-        <div class="image-container" *ngFor="let photo of album; let i=index">
-          <img [src]="photo.src" (click)="open(i)"/>
+        <h1>Rover Photos</h1>
+        <h6>{{ nasaApiService.getDateFromNasaDate(queryDate) | date}} (Sol {{ nasaApiService.estimatePassedSolsFromNasaDates(manifest.landing_date, queryDate)}})</h6>
+    </div>
+
+    <div class="col-sm-12">
+      <div class="filters">
+        <input class="hidden" name="dp"
+          placement="bottom"
+          [positionTarget]="buttonEl"
+          ngbDatepicker
+          [minDate]="toDatepickerDate(manifest.landing_date)"
+          [maxDate]="toDatepickerDate(manifest.max_date)"
+          [markDisabled]="isDisabled"
+          [dayTemplate]="dateDay"
+          #d="ngbDatepicker"/>
+        <button #buttonEl class="btn btn-secondary" (click)="d.toggle()" type="button">Select Date <i class="fas fa-calendar-alt"></i></button>
+        
+        <!-- camera filters should only be applied after fetching images even though their are api endpoints for individual cameras -->
+        <div ngbDropdown class="d-inline-block">
+          <button class="btn btn-dark" id="dropdown" ngbDropdownToggle>Included Cameras</button>
+          <div class="px-3 pt-2 pb-1" ngbDropdownMenu aria-labelledby="dropdown">
+            <div class="form-check" *ngFor="let camera of rover.cameras">
+              <input type="checkbox" class="form-check-input" id="{{camera.name}}dropdownCheck" [(ngModel)]="camera.enabled">
+              <label class="form-check-label" for="{{camera.name}}dropdownCheck">
+                {{camera.name}}
+              </label>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="col-md-12 image-gallery" *ngIf="false">
+      <div class="image-container col-sm-12">
+        <div class="img" *ngFor="let photo of album; let i=index" >
+          <div class="hover">
+            <img [src]="photo.src" (click)="open(i)"/>
+          </div>
         </div>
       </div>
     </div>
+
   </div>
+
 </div>
+
+<!-- Custom Day template for the DatePicker to add the tooltip -->
+<ng-template #dateDay let-date="date" let-disabled="disabled" let-focused="focused" let-selected="selected" let-currentMonth="currentMonth">
+  <div class="day-date">
+    <div class="btn-light"
+      [class.disabled]="disabled" [class.focused]="focused" [class.selected]="selected" [class.hidden]="date.month !== currentMonth"
+      [ngbTooltip]="getTooltip(date)">
+      {{ date.day }}
+    </div>
+  </div>
+</ng-template>

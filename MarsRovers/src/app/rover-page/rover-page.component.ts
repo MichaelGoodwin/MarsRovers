@@ -8,6 +8,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Rovers } from './Rovers';
 import { RoverPage } from './RoverPage';
 import { IAlbum, Lightbox, LightboxConfig } from 'ngx-lightbox';
+import { NgbDate } from '@ng-bootstrap/ng-bootstrap';
+import { ManifestPhoto } from '../services/beans/ManifestPhoto';
 
 @Component({
   selector: 'app-rover-page',
@@ -15,6 +17,7 @@ import { IAlbum, Lightbox, LightboxConfig } from 'ngx-lightbox';
   styleUrls: ['./rover-page.component.scss']
 })
 export class RoverPageComponent implements OnInit, OnDestroy {
+  private queryDate: string; // NASA date format
   private rover: RoverPage;
   private loading = true;
 
@@ -22,6 +25,7 @@ export class RoverPageComponent implements OnInit, OnDestroy {
   private manifest: Manifest;
   private photos: Photo[];
   private album: Array<IAlbum> = [];
+  private dateMap: Map<string, ManifestPhoto> = new Map();
 
   constructor(
     private route: ActivatedRoute,
@@ -50,6 +54,7 @@ export class RoverPageComponent implements OnInit, OnDestroy {
     }
 
     this.rover = Rovers[id];
+    this.rover.cameras.forEach(c => c.enabled = true);
     this.getRoverData();
   }
 
@@ -57,12 +62,13 @@ export class RoverPageComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.manifestSub = this.nasaApiService.getRoverManifest(this.rover.name).pipe(
       catchError(err => {
-        console.log(err);
         return throwError(err);
       }),
       switchMap(manifest => {
         this.manifest = manifest;
-        return this.nasaApiService.getTodaysRoverPhotos(this.rover.name);
+        this.queryDate = manifest.max_date;
+        this.addDates();
+        return this.nasaApiService.getRoverPhotosByEarthDate(this.rover.name, this.queryDate);
       })
     ).subscribe(
       photos => {
@@ -82,7 +88,6 @@ export class RoverPageComponent implements OnInit, OnDestroy {
       () => {
         // Ensure loading screen shows for at least 300ms
         setTimeout(() => this.loading = false, 300);
-        console.log('Completed photos');
       }
     );
   }
@@ -100,10 +105,53 @@ export class RoverPageComponent implements OnInit, OnDestroy {
     this.lightbox.close();
   }
 
+  addDates(): void {
+    const photos: ManifestPhoto[] = this.manifest.photos;
+    for (const photo of photos) {
+      if (photo.earth_date === undefined) {
+        // The Spirit rover doesn't have earth_date specified so we need to estimate the time spent via sol
+        if (photo.sol !== undefined) {
+          const nasaDate = this.nasaApiService.estimateNasaDateFromPassedSols(this.manifest.landing_date, photo.sol);
+          this.dateMap.set(nasaDate, photo);
+        }
+      } else {
+        this.dateMap.set(photo.earth_date, photo);
+      }
+    }
+  }
+
   earthDaysOnMars(): number {
     const landingDate: Date = this.nasaApiService.getDateFromNasaDate(this.manifest.landing_date);
-    const millisecondsPerDay = 24 * 60 * 60 * 1000;
-    return Math.trunc((+new Date() - +landingDate) / millisecondsPerDay);
+    return Math.trunc((+new Date() - +landingDate) / this.nasaApiService.DAY_MILLISECONDS);
+  }
+
+  toDatepickerDate(nasaDateString: string): NgbDate {
+    const dateValues: string[] = nasaDateString.split('-');
+    if (dateValues.length !== 3) {
+      return undefined;
+    }
+
+    return new NgbDate(
+      parseInt(dateValues[0], 10),
+      parseInt(dateValues[1], 10),
+      parseInt(dateValues[2], 10)
+    );
+  }
+
+  private ngbDateAsString(date: NgbDate) {
+    return date.year + '-' + this.nasaApiService.zeroPad(date.month) + '-' + this.nasaApiService.zeroPad(date.day);
+  }
+
+  isDisabled = (date: NgbDate) => {
+    return !this.dateMap.has(this.ngbDateAsString(date));
+  }
+
+  getTooltip = (date: NgbDate) => {
+    const photo: ManifestPhoto = this.dateMap.get(this.ngbDateAsString(date));
+    if (photo === undefined) {
+      return null;
+    }
+    return  photo.total_photos + ' photo(s)';
   }
 
   open(index: number): void {
