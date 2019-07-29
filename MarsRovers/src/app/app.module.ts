@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LightboxModule } from 'ngx-lightbox';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -22,6 +23,7 @@ import { RoverPageComponent } from './rover-page/rover-page.component';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    NgbModule,
     HttpClientModule,
     LightboxModule,
     AppRoutingModule
