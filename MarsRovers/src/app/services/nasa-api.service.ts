@@ -14,10 +14,9 @@ const API_KEY = 'EKvsuvGZcrGFSzKF5Z0Vaa620rjoRGh8k0Yh9wYV';
 export class NasaApiService {
   MINUTE_MILLISECONDS = 1000 * 60;
   DAY_MILLISECONDS = this.MINUTE_MILLISECONDS * 60 * 24;
-  // A SOL on mars is approximately 37 minutes longer than an earth day;
-  SOL_MILLISECONDS = this.DAY_MILLISECONDS + (this.MINUTE_MILLISECONDS * 37);
-
-  private earthDates = {};
+  // Sol is a martian solar day, one full rotation of Mars from the perspective of the Sun.
+  // This takes approximately 88775.24409 seconds or 24 hours, 39 minutes, 35.24409 seconds
+  SOL_MILLISECONDS = this.DAY_MILLISECONDS + (this.MINUTE_MILLISECONDS * 39) + (35.24409 * 1000);
 
   constructor(private http: HttpClient) { }
 
@@ -27,15 +26,6 @@ export class NasaApiService {
 
   private parametrized(parameter: string, value: string): string {
     return '&' + parameter + '=' + value;
-  }
-
-  private dateAsQueryString(roverName: string, date: Date): string {
-    const maxDate = this.earthDates[roverName];
-    if (maxDate !== undefined && date > maxDate) {
-      date = maxDate;
-    }
-
-    return date.getUTCFullYear() + '-' + (date.getUTCMonth() + 1) + '-' + date.getUTCDate();
   }
 
   getRoverManifest(roverName: string): Observable<Manifest> {
@@ -53,17 +43,14 @@ export class NasaApiService {
           return throwError('Retrieved invalid manifest format for the ' + roverName + ' rover');
         }
 
-        const date = this.getDateFromNasaDate(manifest.max_date);
-        this.earthDates[roverName] = date;
-
         return data.photo_manifest;
       })
     );
   }
 
-  getTodaysRoverPhotos(roverName: string): Observable<Photo[]> {
+  getRoverPhotosByEarthDate(roverName: string, nasaEarthDate: string): Observable<Photo[]> {
     let url = this.createApiUrl('rovers/' + roverName + '/photos');
-    url += this.parametrized('earth_date', this.dateAsQueryString(roverName, new Date()));
+    url += this.parametrized('earth_date', nasaEarthDate);
     const response: Observable<any> = this.http.get<any>(url);
 
     return response.pipe(
