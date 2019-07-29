@@ -12,6 +12,11 @@ const API_KEY = 'EKvsuvGZcrGFSzKF5Z0Vaa620rjoRGh8k0Yh9wYV';
   providedIn: 'root'
 })
 export class NasaApiService {
+  MINUTE_MILLISECONDS = 1000 * 60;
+  DAY_MILLISECONDS = this.MINUTE_MILLISECONDS * 60 * 24;
+  // A SOL on mars is approximately 37 minutes longer than an earth day;
+  SOL_MILLISECONDS = this.DAY_MILLISECONDS + (this.MINUTE_MILLISECONDS * 37);
+
   private earthDates = {};
 
   constructor(private http: HttpClient) { }
@@ -89,5 +94,33 @@ export class NasaApiService {
       parseInt(dateValues[1], 10) - 1,
       parseInt(dateValues[2], 10)
     );
+  }
+
+  zeroPad(num: number): string {
+    return (num < 10 ? '0' : '') + num;
+  }
+
+  public getNasaDateFromDate(date: Date): string {
+    const dateString = date.getFullYear() + '-' + this.zeroPad(date.getMonth() + 1) + '-' + this.zeroPad(date.getDate());
+    return dateString;
+  }
+
+  public estimateDateFromPassedSols(nasaLandingDate: string, sols: number): Date {
+    const landingDate = this.getDateFromNasaDate(nasaLandingDate);
+    const endDate = new Date(+landingDate + (this.SOL_MILLISECONDS * sols));
+    return endDate;
+  }
+
+  public estimateNasaDateFromPassedSols(nasaLandingDate: string, sols: number): string {
+    const date = this.estimateDateFromPassedSols(nasaLandingDate, sols);
+    return this.getNasaDateFromDate(date);
+  }
+
+  public estimatePassedSolsFromNasaDates(nasaLandingDate: string, nasaDate: string): number {
+    const landingDate = this.getDateFromNasaDate(nasaLandingDate);
+    const specifiedDate = this.getDateFromNasaDate(nasaDate);
+    const timeSpentOnMars = +specifiedDate - +landingDate;
+    // We start on day 1
+    return 1 + Math.trunc(timeSpentOnMars / this.SOL_MILLISECONDS);
   }
 }
