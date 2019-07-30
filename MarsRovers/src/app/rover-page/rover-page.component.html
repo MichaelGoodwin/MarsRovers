@@ -87,6 +87,7 @@
     </div>
 
     <div class="col-md-12">
+      <h5 *ngIf="!galleryLoading">Displaying {{album.length}}/{{photos.length}} photos</h5>
       <div class="image-gallery">
         <app-loading class="wrapper" [flag]="galleryLoading" [delay]="0"></app-loading>
 
