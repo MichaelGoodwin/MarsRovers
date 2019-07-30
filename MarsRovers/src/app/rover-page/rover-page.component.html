@@ -6,27 +6,25 @@
   <div class="row rover-info">
     <div class="col-sm-12 text-center">
       <h1>{{ manifest.name }} Rover</h1>
-      <div class="img-container">
+      <div id="manifest-container">
         <img src="{{rover.image}}" class="rover img-thumbnail" alt="{{manifest.name}} rover image">
-        <div class="manifest-container">
-          <div class="manifest-info">
-            <p><b>Launched:</b> {{ nasaApiService.getDateFromNasaDate(manifest.launch_date) | date }}</p>
-            <p><b>Landed:</b> {{ nasaApiService.getDateFromNasaDate(manifest.landing_date) | date }}</p>
-          </div>
-          <div class="manifest-info">
-            <p><b>Latest Photo:</b> {{ nasaApiService.getDateFromNasaDate(manifest.max_date) | date }}</p>
-            <p><b>Photos Taken:</b> {{ manifest.total_photos }}</p>
-          </div>
-          <div class="manifest-info">
-            <p><b>Days on Mars:</b> {{ earthDaysOnMars() }}</p>
-            <p><b>Sols on Mars:</b> {{ manifest.max_sol }}</p>
-          </div>
+        <div class="manifest-info">
+          <p><b>Launched:</b> {{ nasaApiService.getDateFromNasaDate(manifest.launch_date) | date }}</p>
+          <p><b>Landed:</b> {{ nasaApiService.getDateFromNasaDate(manifest.landing_date) | date }}</p>
+        </div>
+        <div class="manifest-info">
+          <p><b>Latest Photo:</b> {{ nasaApiService.getDateFromNasaDate(manifest.max_date) | date }}</p>
+          <p><b>Photos Taken:</b> {{ manifest.total_photos }}</p>
+        </div>
+        <div class="manifest-info">
+          <p><b>Days on Mars:</b> {{ earthDaysOnMars() }}</p>
+          <p><b>Sols on Mars:</b> {{ manifest.max_sol }}</p>
         </div>
       </div>
     </div>
 
     <div class="col-sm-12 text-center">
-      <div class="description-container">
+      <div id="description-container">
         <h5>Status: {{ manifest.status == "active" ? "Exploring Mars" : "Enjoying retirement"}}</h5>
         <p [innerHTML]="rover.description"></p>
         <a class="btn btn-secondary" target="_blank" [href]="rover.wikiLink">View Wikipedia article</a>
@@ -62,7 +60,7 @@
           <button class="btn btn-dark" id="dropdown" ngbDropdownToggle>Included Cameras</button>
           <div class="px-3 pt-2 pb-1" ngbDropdownMenu aria-labelledby="dropdown">
             <div class="form-check" *ngFor="let camera of rover.cameras">
-              <input type="checkbox" class="form-check-input" id="{{camera.name}}dropdownCheck" [(ngModel)]="camera.enabled">
+              <input type="checkbox" class="form-check-input" id="{{camera.name}}dropdownCheck" [ngModel]="cameras.get(camera)" (ngModelChange)="cameras.set(camera, $event)">
               <label class="form-check-label" for="{{camera.name}}dropdownCheck">
                 {{camera.name}}
               </label>
@@ -73,12 +71,10 @@
       </div>
     </div>
 
-    <div class="col-md-12 image-gallery" *ngIf="false">
-      <div class="image-container col-sm-12">
-        <div class="img" *ngFor="let photo of album; let i=index" >
-          <div class="hover">
-            <img [src]="photo.src" (click)="open(i)"/>
-          </div>
+    <div class="col-md-12 image-gallery">
+      <div class="img" *ngFor="let photo of album; let i=index" >
+        <div class="hover">
+          <img [src]="photo.src" (click)="open(i)"/>
         </div>
       </div>
     </div>

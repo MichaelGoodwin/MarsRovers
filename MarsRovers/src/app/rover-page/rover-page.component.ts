@@ -10,6 +10,7 @@ import { RoverPage } from './RoverPage';
 import { IAlbum, Lightbox, LightboxConfig } from 'ngx-lightbox';
 import { NgbDate } from '@ng-bootstrap/ng-bootstrap';
 import { ManifestPhoto } from '../services/beans/ManifestPhoto';
+import { RoverCamera } from '../services/beans/RoverCamera';
 
 @Component({
   selector: 'app-rover-page',
@@ -23,9 +24,10 @@ export class RoverPageComponent implements OnInit, OnDestroy {
 
   private manifestSub: Subscription;
   private manifest: Manifest;
-  private photos: Photo[];
+  private photos: Photo[] = [];
   private album: Array<IAlbum> = [];
   private dateMap: Map<string, ManifestPhoto> = new Map();
+  private cameras: Map<RoverCamera, boolean> = new Map();
 
   constructor(
     private route: ActivatedRoute,
@@ -37,7 +39,6 @@ export class RoverPageComponent implements OnInit, OnDestroy {
     this.route.params.subscribe(params => {
       this.handleRouteChange(params);
     });
-
 
     // set default config
     this.lightboxConfig.fadeDuration = 1;
@@ -54,7 +55,7 @@ export class RoverPageComponent implements OnInit, OnDestroy {
     }
 
     this.rover = Rovers[id];
-    this.rover.cameras.forEach(c => c.enabled = true);
+    this.rover.cameras.forEach(c => this.cameras.set(c, true));
     this.getRoverData();
   }
 
