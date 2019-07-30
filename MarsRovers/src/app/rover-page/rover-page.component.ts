@@ -10,7 +10,6 @@ import { RoverPage } from './RoverPage';
 import { IAlbum, Lightbox, LightboxConfig } from 'ngx-lightbox';
 import { NgbDate } from '@ng-bootstrap/ng-bootstrap';
 import { ManifestPhoto } from '../services/beans/ManifestPhoto';
-import { RoverCamera } from '../services/beans/RoverCamera';
 
 @Component({
   selector: 'app-rover-page',
@@ -21,13 +20,17 @@ export class RoverPageComponent implements OnInit, OnDestroy {
   private queryDate: string; // NASA date format
   private rover: RoverPage;
   private loading = true;
+  private galleryLoading = false;
 
   private manifestSub: Subscription;
   private manifest: Manifest;
   private photos: Photo[] = [];
   private album: Array<IAlbum> = [];
   private dateMap: Map<string, ManifestPhoto> = new Map();
-  private cameras: Map<RoverCamera, boolean> = new Map();
+  private cameras: any = {};
+  // Stores the cameras available by name
+  albumSet: Set<string> = new Set();
+  selectedDate: NgbDate;
 
   constructor(
     private route: ActivatedRoute,
@@ -55,7 +58,7 @@ export class RoverPageComponent implements OnInit, OnDestroy {
     }
 
     this.rover = Rovers[id];
-    this.rover.cameras.forEach(c => this.cameras.set(c, true));
+    this.rover.cameras.forEach(c => this.cameras[c.name] = true);
     this.getRoverData();
   }
 
@@ -68,6 +71,7 @@ export class RoverPageComponent implements OnInit, OnDestroy {
       switchMap(manifest => {
         this.manifest = manifest;
         this.queryDate = manifest.max_date;
+        this.selectedDate = this.toDatepickerDate(this.queryDate);
         this.addDates();
         return this.nasaApiService.getRoverPhotosByEarthDate(this.rover.name, this.queryDate);
       })
@@ -75,15 +79,11 @@ export class RoverPageComponent implements OnInit, OnDestroy {
       photos => {
         this.photos = photos;
         this.album = [];
+        this.albumSet.clear();
 
         console.log(this.manifest);
         console.log(this.photos);
-        for (const photo of photos) {
-          const caption = 'Photo taken on ' + photo.earth_date + ' (sol ' + photo.sol
-            + ') by ' + photo.rover.name + '\'s ' + photo.camera.full_name;
-          const pic = {src: photo.img_src, thumb: photo.img_src, caption };
-          this.album.push(pic);
-        }
+        this.refilterAlbum();
       },
       err => console.log(err),
       () => {
@@ -153,6 +153,54 @@ export class RoverPageComponent implements OnInit, OnDestroy {
       return null;
     }
     return  photo.total_photos + ' photo(s)';
+  }
+
+  private createAlbumImage(photo: Photo): IAlbum {
+    const caption = 'Photo taken on ' + photo.earth_date + ' (sol ' + photo.sol
+      + ') by ' + photo.rover.name + '\'s ' + photo.camera.full_name
+      + ' - <a href="' + photo.img_src + '" target="_blank">Source image</a>';
+    return {src: photo.img_src, thumb: photo.img_src, caption };
+  }
+
+  private refilterAlbum(): void {
+    const arr: Array<IAlbum> = [];
+    const set: Set<string> = new Set();
+    for (const photo of this.photos) {
+      if (this.cameras[photo.camera.name]) {
+        const pic: IAlbum = this.createAlbumImage(photo);
+        arr.push(pic);
+      }
+      set.add(photo.camera.name);
+    }
+    this.album = arr;
+    this.albumSet = set;
+  }
+
+  updateSelectedDate(date: NgbDate): void {
+    this.selectedDate = date;
+    this.queryDate = this.ngbDateAsString(date);
+
+    this.album = [];
+    this.galleryLoading = true;
+
+    // Query new photos for specified date
+    this.nasaApiService.getRoverPhotosByEarthDate(this.rover.name, this.queryDate).subscribe(
+      photos => {
+        this.photos = photos;
+        console.log(this.photos);
+        this.refilterAlbum();
+      },
+      err => console.log(err),
+      () => {
+        // Ensure loading screen shows for at least 300ms
+        setTimeout(() => this.galleryLoading = false, 300);
+      }
+    );
+  }
+
+  updateCameraState(cameraName: string): void {
+    this.cameras[cameraName] = !this.cameras[cameraName];
+    this.refilterAlbum();
   }
 
   open(index: number): void {

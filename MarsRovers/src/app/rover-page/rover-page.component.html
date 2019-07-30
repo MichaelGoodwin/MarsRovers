@@ -39,35 +39,41 @@
   <div class="row photo-gallery">
     <div class="col-sm-12">
         <h1>Rover Photos</h1>
-        <h6>{{ nasaApiService.getDateFromNasaDate(queryDate) | date}} (Sol {{ nasaApiService.estimatePassedSolsFromNasaDates(manifest.landing_date, queryDate)}})</h6>
+        <h6 #buttonEl>
+          <input class="hidden" name="dp"
+            placement="bottom"
+            [positionTarget]="buttonEl"
+            ngbDatepicker
+            [minDate]="toDatepickerDate(manifest.landing_date)"
+            [maxDate]="toDatepickerDate(manifest.max_date)"
+            [markDisabled]="isDisabled"
+            [dayTemplate]="dateDay"
+            #d="ngbDatepicker"
+            [ngModel]="selectedDate"
+            (ngModelChange)="updateSelectedDate($event)"/>
+          <button class="btn btn-outline-success" (click)="d.toggle()" type="button">
+            <i class="fas fa-calendar-alt"></i>
+            {{ nasaApiService.getDateFromNasaDate(queryDate) | date}} (Sol {{ nasaApiService.estimatePassedSolsFromNasaDates(manifest.landing_date, queryDate)}})
+          </button>
+        </h6>
     </div>
 
     <div class="col-sm-12">
+      <h4>Cameras</h4>
       <div class="filters">
-        <input class="hidden" name="dp"
-          placement="bottom"
-          [positionTarget]="buttonEl"
-          ngbDatepicker
-          [minDate]="toDatepickerDate(manifest.landing_date)"
-          [maxDate]="toDatepickerDate(manifest.max_date)"
-          [markDisabled]="isDisabled"
-          [dayTemplate]="dateDay"
-          #d="ngbDatepicker"/>
-        <button #buttonEl class="btn btn-secondary" (click)="d.toggle()" type="button">Select Date <i class="fas fa-calendar-alt"></i></button>
-        
-        <!-- camera filters should only be applied after fetching images even though their are api endpoints for individual cameras -->
-        <div ngbDropdown class="d-inline-block">
-          <button class="btn btn-dark" id="dropdown" ngbDropdownToggle>Included Cameras</button>
-          <div class="px-3 pt-2 pb-1" ngbDropdownMenu aria-labelledby="dropdown">
-            <div class="form-check" *ngFor="let camera of rover.cameras">
-              <input type="checkbox" class="form-check-input" id="{{camera.name}}dropdownCheck" [ngModel]="cameras.get(camera)" (ngModelChange)="cameras.set(camera, $event)">
-              <label class="form-check-label" for="{{camera.name}}dropdownCheck">
-                {{camera.name}}
-              </label>
-            </div>
-          </div>
-        </div>
-
+        <div class="camera-container"
+          *ngFor="let camera of rover.cameras"
+          [ngbTooltip]="camera.full_name"
+        >
+          <button class="btn pointer" 
+            [ngClass]="cameras[camera.name] ? 'btn-success' : 'btn-danger'"
+            [disabled]="!albumSet.has(camera.name)"
+            (click)="updateCameraState(camera.name)"
+          >
+            <i class="fas" [ngClass]="albumSet.has(camera.name) ? 
+              (cameras[camera.name] ? 'fa-check' : 'fa-times') : 'fa-ban'"></i>
+            {{camera.name}}
+          </button>
       </div>
     </div>
 
@@ -77,6 +83,7 @@
           <img [src]="photo.src" (click)="open(i)"/>
         </div>
       </div>
+      <app-loading class="wrapper" [flag]="galleryLoading" [delay]="0"></app-loading>
     </div>
 
   </div>

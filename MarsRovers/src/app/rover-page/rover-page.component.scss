@@ -35,18 +35,7 @@
 }
 
 .photo-gallery{
-  background: #1f1f1f;
-}
-
-.filters{
-  max-width: 600px;
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-
-  .form-check{
-    margin-bottom: 5px;
-  }
+  background: linear-gradient(to left, #200e08, #2f150d);
 }
 
 .day-date {
@@ -66,6 +55,22 @@
   }
 }
 
+.filters{
+  margin-bottom: 10px;
+
+  .camera-container{
+    display: inline-block;
+  }
+
+  .btn{
+    margin: 5px;
+  }
+
+  .fas{
+    min-width: 16px;
+  }
+}
+
 .image-gallery{
   display: flex;
   flex-direction: row;
@@ -75,8 +80,7 @@
   max-width: 1200px;
   min-height: 250px;
   margin: 0 auto;
-  padding-top: 50px;
-  padding-bottom: 50px;
+  margin-bottom: 50px;
 
   .hover{
     background-color: black;
