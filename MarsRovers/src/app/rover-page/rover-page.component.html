@@ -76,14 +76,27 @@
           </button>
       </div>
     </div>
+    
+    <div class="col-sm-12">
+      <select class="custom-select" [(ngModel)]="pageSize">
+        <option value="10">10 per page</option>
+        <option value="25">25 per page</option>
+        <option value="50">50 per page</option>
+        <option value="100">100 per page</option>
+      </select>
+    </div>
 
-    <div class="col-md-12 image-gallery">
-      <div class="img" *ngFor="let photo of album; let i=index" >
-        <div class="hover">
-          <img [src]="photo.src" (click)="open(i)"/>
+    <div class="col-md-12">
+      <div class="image-gallery">
+        <app-loading class="wrapper" [flag]="galleryLoading" [delay]="0"></app-loading>
+
+        <div class="img" *ngFor="let photo of album | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize; let i=index">
+          <div class="hover">
+            <img [src]="photo.src" (click)="open(i)"/>
+          </div>
         </div>
+        <ngb-pagination *ngIf="album.length > pageSize" [(page)]="page" [pageSize]="pageSize" [collectionSize]="album.length"></ngb-pagination>
       </div>
-      <app-loading class="wrapper" [flag]="galleryLoading" [delay]="0"></app-loading>
     </div>
 
   </div>

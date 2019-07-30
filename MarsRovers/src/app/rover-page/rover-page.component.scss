@@ -122,4 +122,17 @@
     -webkit-transition: opacity 0.5s;
     transition: opacity 0.5s;
   }
+
+  ngb-pagination{
+    flex: 0 1 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+  }
+}
+
+select{
+  margin-bottom: 25px;
+  max-width: 150px;
 }

@@ -31,6 +31,8 @@ export class RoverPageComponent implements OnInit, OnDestroy {
   // Stores the cameras available by name
   albumSet: Set<string> = new Set();
   selectedDate: NgbDate;
+  page = 1;
+  pageSize = 10;
 
   constructor(
     private route: ActivatedRoute,
