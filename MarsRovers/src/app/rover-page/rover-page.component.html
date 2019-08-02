@@ -1,0 +1,116 @@
+<app-loading class="wrapper" [flag]="loading" [delay]="300"></app-loading>
+
+
+<div *ngIf="!loading" class="wrapper text-center">
+  <!-- Rover information Section -->
+  <div class="row rover-info">
+    <div class="col-sm-12 text-center">
+      <h1>{{ manifest.name }} Rover</h1>
+      <div id="manifest-container">
+        <img src="{{rover.image}}" class="rover img-thumbnail" alt="{{manifest.name}} rover image">
+        <div class="manifest-info">
+          <p><b>Launched:</b> {{ nasaApiService.getDateFromNasaDate(manifest.launch_date) | date }}</p>
+          <p><b>Landed:</b> {{ nasaApiService.getDateFromNasaDate(manifest.landing_date) | date }}</p>
+        </div>
+        <div class="manifest-info">
+          <p><b>Latest Photo:</b> {{ nasaApiService.getDateFromNasaDate(manifest.max_date) | date }}</p>
+          <p><b>Photos Taken:</b> {{ manifest.total_photos }}</p>
+        </div>
+        <div class="manifest-info">
+          <p><b>Days on Mars:</b> {{ earthDaysOnMars() }}</p>
+          <p><b>Sols on Mars:</b> {{ manifest.max_sol }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-12 text-center">
+      <div id="description-container">
+        <h5>Status: {{ manifest.status == "active" ? "Exploring Mars" : "Enjoying retirement"}}</h5>
+        <p [innerHTML]="rover.description"></p>
+        <a class="btn btn-secondary" target="_blank" [href]="rover.wikiLink">View Wikipedia article</a>
+      </div>
+    </div>
+    <div class="col-sm-12">
+      <hr/>
+    </div>
+  </div>
+  
+  <!-- Rover photo gallery -->
+  <div class="row photo-gallery">
+    <div class="col-sm-12">
+        <h1>Rover Photos</h1>
+        <h6 #buttonEl>
+          <input class="hidden" name="dp"
+            placement="bottom"
+            [positionTarget]="buttonEl"
+            ngbDatepicker
+            [minDate]="toDatepickerDate(manifest.landing_date)"
+            [maxDate]="toDatepickerDate(manifest.max_date)"
+            [markDisabled]="isDisabled"
+            [dayTemplate]="dateDay"
+            #d="ngbDatepicker"
+            [ngModel]="selectedDate"
+            (ngModelChange)="updateSelectedDate($event)"/>
+          <button class="btn btn-outline-success" (click)="d.toggle()" type="button">
+            <i class="fas fa-calendar-alt"></i>
+            {{ nasaApiService.getDateFromNasaDate(queryDate) | date}} (Sol {{ nasaApiService.estimatePassedSolsFromNasaDates(manifest.landing_date, queryDate)}})
+          </button>
+        </h6>
+    </div>
+
+    <div class="col-sm-12">
+      <h4>Cameras</h4>
+      <div class="filters">
+        <div class="camera-container"
+          *ngFor="let camera of rover.cameras"
+          [ngbTooltip]="camera.full_name"
+        >
+          <button class="btn pointer" 
+            [ngClass]="cameras[camera.name] ? 'btn-success' : 'btn-danger'"
+            [disabled]="!albumSet.has(camera.name)"
+            (click)="updateCameraState(camera.name)"
+          >
+            <i class="fas" [ngClass]="albumSet.has(camera.name) ? 
+              (cameras[camera.name] ? 'fa-check' : 'fa-times') : 'fa-ban'"></i>
+            {{camera.name}}
+          </button>
+      </div>
+    </div>
+    
+    <div class="col-sm-12">
+      <select class="custom-select" [(ngModel)]="pageSize">
+        <option value="10">10 per page</option>
+        <option value="25">25 per page</option>
+        <option value="50">50 per page</option>
+        <option value="100">100 per page</option>
+      </select>
+    </div>
+
+    <div class="col-md-12">
+      <h5 *ngIf="!galleryLoading">Displaying {{album.length}}/{{photos.length}} photos</h5>
+      <div class="image-gallery">
+        <app-loading class="wrapper" [flag]="galleryLoading" [delay]="0"></app-loading>
+
+        <div class="img" *ngFor="let photo of album | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize; let i=index">
+          <div class="hover">
+            <img [src]="photo.src" (click)="open(i)"/>
+          </div>
+        </div>
+        <ngb-pagination *ngIf="album.length > pageSize" [(page)]="page" [pageSize]="pageSize" [collectionSize]="album.length"></ngb-pagination>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- Custom Day template for the DatePicker to add the tooltip -->
+<ng-template #dateDay let-date="date" let-disabled="disabled" let-focused="focused" let-selected="selected" let-currentMonth="currentMonth">
+  <div class="day-date">
+    <div class="btn-light"
+      [class.disabled]="disabled" [class.focused]="focused" [class.selected]="selected" [class.hidden]="date.month !== currentMonth"
+      [ngbTooltip]="getTooltip(date)">
+      {{ date.day }}
+    </div>
+  </div>
+</ng-template>

@@ -1,0 +1,138 @@
+.row{
+  max-width: 100%;
+  margin: 0 0;
+}
+
+.rover-info{
+  background: url('../../assets/mars_surface_dust_black.png') no-repeat;
+  background-size: cover;
+  min-height: 100vh;
+
+  // apply negative margin and offset it with padding to offset background image to match default image
+  margin-top: -60px;
+  padding-top: 60px;
+}
+
+#manifest-container{
+  display: inline-block;
+
+  .img-thumbnail{
+    max-height: 50vh;
+  }
+}
+
+.manifest-info{
+  display: flex;
+  justify-content: space-between;
+  @media (max-width: 475px) {
+    flex-direction: column;
+  }
+}
+
+#description-container{
+  max-width: 650px;
+  margin: 0 auto;
+}
+
+.photo-gallery{
+  background: linear-gradient(to left, #200e08, #2f150d);
+}
+
+.day-date {
+  text-align: center;
+  width: 2rem;
+  height: 2rem;
+  line-height: 2rem;
+  border-radius: 0.25rem;
+  background: transparent;
+
+  &.outside {
+    opacity: 0.5;
+  }
+
+  .btn-light.disabled{
+    opacity: .4;
+  }
+}
+
+.filters{
+  margin-bottom: 10px;
+
+  .camera-container{
+    display: inline-block;
+  }
+
+  .btn{
+    margin: 5px;
+  }
+
+  .fas{
+    min-width: 16px;
+  }
+}
+
+.image-gallery{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  max-width: 1200px;
+  min-height: 250px;
+  margin: 0 auto;
+  margin-bottom: 50px;
+
+  .hover{
+    background-color: black;
+    -webkit-transition: box-shadow 0.3s;
+    transition: box-shadow 0.3s;
+    border-radius: 9px;
+    display: inline-block;
+  }
+
+  .img {
+    padding: 4px;
+    border-radius: 9px;
+    cursor: pointer;
+    flex: 0 1 25%;
+    
+    @media screen and (max-width: 768px) {
+      flex: 0 1 33%;
+    }
+    @media screen and (max-width: 480px) {
+      flex: 0 1 50%;
+    }
+    @media screen and (max-width: 320px) {
+      flex: 0 1 100%;
+    }
+  }
+  
+  .hover:hover{
+    box-shadow: 0px 0px 12px -3px orange;
+    img {
+      opacity: 0.5;
+    }
+  }
+  
+  img{
+    max-height: 100%;
+    max-width: 100%;
+    border-radius: 9px;
+    opacity: 1;
+    -webkit-transition: opacity 0.5s;
+    transition: opacity 0.5s;
+  }
+
+  ngb-pagination{
+    flex: 0 1 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+  }
+}
+
+select{
+  margin-bottom: 10px;
+  max-width: 150px;
+}
