@@ -79,12 +79,10 @@ export class RoverPageComponent implements OnInit, OnDestroy {
       })
     ).subscribe(
       photos => {
+        photos.forEach(p => p.img_src = p.img_src.replace('http://', 'https://'));
         this.photos = photos;
         this.album = [];
         this.albumSet.clear();
-
-        console.log(this.manifest);
-        console.log(this.photos);
         this.refilterAlbum();
       },
       err => console.log(err),
