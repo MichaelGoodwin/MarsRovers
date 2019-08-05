@@ -91,9 +91,9 @@
       <div class="image-gallery">
         <app-loading class="wrapper" [flag]="galleryLoading" [delay]="0"></app-loading>
 
-        <div class="img" *ngFor="let photo of album | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize; let i=index">
+        <div class="img" *ngFor="let photo of album | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize">
           <div class="hover">
-            <img [src]="photo.src" (click)="open(i)"/>
+            <img [src]="photo.src" (click)="open(photo)"/>
           </div>
         </div>
         <ngb-pagination *ngIf="album.length > pageSize" [(page)]="page" [pageSize]="pageSize" [collectionSize]="album.length"></ngb-pagination>

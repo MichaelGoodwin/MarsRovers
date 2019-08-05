@@ -66,27 +66,17 @@ export class RoverPageComponent implements OnInit, OnDestroy {
 
   private getRoverData(): void {
     this.loading = true;
-    this.manifestSub = this.nasaApiService.getRoverManifest(this.rover.name).pipe(
-      catchError(err => {
-        return throwError(err);
-      }),
-      switchMap(manifest => {
+    this.manifestSub = this.nasaApiService.getRoverManifest(this.rover.name)
+    .subscribe(
+      manifest => {
         this.manifest = manifest;
         this.queryDate = manifest.max_date;
         this.selectedDate = this.toDatepickerDate(this.queryDate);
         this.addDates();
-        return this.nasaApiService.getRoverPhotosByEarthDate(this.rover.name, this.queryDate);
-      })
-    ).subscribe(
-      photos => {
-        photos.forEach(p => p.img_src = p.img_src.replace('http://', 'https://'));
-        this.photos = photos;
-        this.album = [];
-        this.albumSet.clear();
-        this.refilterAlbum();
       },
       err => console.log(err),
       () => {
+        this.updateSelectedDate(this.selectedDate);
         // Ensure loading screen shows for at least 300ms
         setTimeout(() => this.loading = false, 300);
       }
@@ -203,8 +193,8 @@ export class RoverPageComponent implements OnInit, OnDestroy {
     this.refilterAlbum();
   }
 
-  open(index: number): void {
-    this.lightbox.open(this.album, index);
+  open(photo: IAlbum): void {
+    this.lightbox.open(this.album, this.album.indexOf(photo));
   }
 
   close(): void {

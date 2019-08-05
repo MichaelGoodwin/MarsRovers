@@ -63,6 +63,7 @@ export class NasaApiService {
           return throwError('Retrieved invalid photo format for the ' + roverName + ' rover');
         }
 
+        data.photos.forEach(p => p.img_src = p.img_src.replace('http:', 'https:'));
         return data.photos;
       })
     );
