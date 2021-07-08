@@ -3,13 +3,13 @@ import { CameraDescription } from './CameraDescription';
 
 export class Cameras {
   static readonly FHAZ: CameraDescription = {name: 'FHAZ', full_name: 'Front Hazard Avoidance Camera',
-    description: 'The Front Hazard Avoidance Camera (FHAZ) is used to take pictures of the path in front of the rover. The Hazard cameras are used to check for potential hazards to the rover as well as determine the safest path forwards'};
+    description: 'The Front Hazard Avoidance Camera (FHAZ) is used to take pictures of the path in front of the rover. The Hazard cameras are used to check for potential hazards to the rover as well as determine the safest path forwards.'};
   static readonly RHAZ: CameraDescription = {name: 'RHAZ', full_name: 'Rear Hazard Avoidance Camera',
-    description: 'The Rear Hazard Avoidance Camera (RHAZ) is used to take pictures of the path behind the rover. The Hazard cameras are used to check for potential hazards to the rover as well as determine the safest path backwards'};
+    description: 'The Rear Hazard Avoidance Camera (RHAZ) is used to take pictures of the path behind the rover. The Hazard cameras are used to check for potential hazards to the rover as well as determine the safest path backwards.'};
   static readonly MAST: CameraDescription = {name: 'MAST', full_name: 'Mast Camera',
     description: 'The Mast Camera takes color images and video footage of the Martian terrain which can be stitched together to create panoramas. The images taken by this camera are used to study the Martian landscape, rocks, and soils; view frost and weather phenomena; and support the driving and sampling operations of the rover.'};
   static readonly CHEMCAM: CameraDescription = {name: 'CHEMCAM', full_name: 'Chemistry and Camera Complex',
-    description: 'The Chemistry and Camera Complex (ChemCam) fires a laser and analyzes the elemental composition of vaporized materials from areas smaller than 0.04 inch (1 millimeter) on the surface of Martian rocks and soils. An on-board spectrograph analyzes the vaporized materials for specific minerals and microstructures by measuring the composition of the resulting plasma'};
+    description: 'The Chemistry and Camera Complex (ChemCam) fires a laser and analyzes the elemental composition of vaporized materials from areas smaller than 0.04 inch (1 millimeter) on the surface of Martian rocks and soils. An on-board spectrograph analyzes the vaporized materials for specific minerals and microstructures by measuring the composition of the resulting plasma.'};
   static readonly MAHLI: CameraDescription = {name: 'MAHLI', full_name: 'Mars Hand Lens Imager',
     description: 'The Mars Hand Lens Imager (MAHLI) is used to take microscopic images of minerals, textures, and structures in rocks and soil at scales smaller than the diameter of a human hair. This provides earthbound scientists with close-up views of the martian samples and helps them select samples for further investigation.'};
   static readonly MARDI: CameraDescription = {name: 'MARDI', full_name: 'Mars Descent Imager',
