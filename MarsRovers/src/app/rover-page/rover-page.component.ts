@@ -177,7 +177,6 @@ export class RoverPageComponent implements OnInit, OnDestroy {
     this.nasaApiService.getRoverPhotosByEarthDate(this.rover.name, this.queryDate).subscribe(
       photos => {
         this.photos = photos;
-        console.log(this.photos);
         this.refilterAlbum();
       },
       err => console.log(err),
