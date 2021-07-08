@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { RoverPage } from '../rover-page/RoverPage';
+import { Rovers } from '../rover-page/Rovers';
 
 @Component({
   selector: 'app-navbar',
@@ -8,6 +10,7 @@ import { Router } from '@angular/router';
 })
 export class NavbarComponent implements OnInit {
   navbarCollapsed: boolean;
+  private rovers = Rovers;
 
   constructor(private router: Router) {
     this.navbarCollapsed = true;
@@ -18,5 +21,9 @@ export class NavbarComponent implements OnInit {
 
   isActive(url: string) {
     return this.router.url === ('/' + url);
+  }
+
+  getRovers(): Array<RoverPage> {
+    return Object.values(this.rovers);
   }
 }

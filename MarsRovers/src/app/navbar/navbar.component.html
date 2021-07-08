@@ -18,12 +18,9 @@
           Rovers
         </a>
         <div class="dropdown-menu bg-dark" aria-labelledby="dropdownMenuButton">
-          <a class="dropdown-item text-white" href="#" [routerLink]="['/rover/curiosity']" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
-            Curiosity</a>
-          <a class="dropdown-item text-white" href="#" [routerLink]="['/rover/opportunity']" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
-            Opportunity</a>
-          <a class="dropdown-item text-white" href="#" [routerLink]="['/rover/spirit']" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
-            Spirit</a>
+          <a *ngFor="let rover of getRovers()"
+		  class="dropdown-item text-white" href="#" [routerLink]="['/rover/' + rover.name]" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+            {{rover.name}}</a>
         </div>
       </li>
     </ul>
