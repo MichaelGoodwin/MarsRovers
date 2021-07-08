@@ -92,7 +92,9 @@ export class RoverPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.manifestSub.unsubscribe();
+    if (this.manifestSub !== undefined) {
+      this.manifestSub.unsubscribe();
+    }
     this.lightbox.close();
   }
 
