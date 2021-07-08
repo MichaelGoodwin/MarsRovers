@@ -3,6 +3,11 @@ import { RoverPage } from './RoverPage';
 import { RoverCameras } from '../services/beans/RoverCameras';
 
 export const Rovers = {
+  PERSEVERANCE: new RoverPage('Perseverance',
+    './assets/percy_600_600.png',
+    'https://en.wikipedia.org/wiki/Perseverance_(rover)',
+    RoverCameras.PERSEVERANCE,
+    '<b>Perseverance</b>, nicknamed <b>Percy</b>, is a car-sized rover designed to explore the crater Jezero on Mars as part of NASA\'s Mars 2020 mission. This rover has a similar design to its predecessor rover Curiosity and carried a mini-helicopter called Ingenuity to mars, which achieved the first powered flight on another planet on the 19th of April 2021. This rover\'s goal include identifying ancient Martian environments capable of supporting life, seeking out evidence of former microbial life existing in those environments, collecting rock and soil samples to store on the Martian surface, and testing oxygen production from the Martian atmosphere to prepare for future crewed missions.'),
   CURIOSITY: new RoverPage('Curiosity',
     './assets/curiosity_600_600.png',
     'https://en.wikipedia.org/wiki/Curiosity_(rover)',
