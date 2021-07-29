@@ -37,5 +37,3 @@ import { InfiniteLoadingComponent } from './infinite-loading/infinite-loading.co
   bootstrap: [AppComponent]
 })
 export class AppModule { }
-
-platformBrowserDynamic().bootstrapModule(AppModule);
