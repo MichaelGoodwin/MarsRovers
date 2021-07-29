@@ -37,4 +37,9 @@ export class InfiniteLoadingComponent implements OnInit, AfterViewInit, OnDestro
   ngOnDestroy(): void {
     this.observer.disconnect();
   }
+
+  public refreshObserver() {
+    this.observer.unobserve(this.anchor.nativeElement);
+    this.observer.observe(this.anchor.nativeElement);
+  }
 }

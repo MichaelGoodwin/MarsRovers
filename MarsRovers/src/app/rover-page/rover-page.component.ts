@@ -10,6 +10,7 @@ import { RoverPage } from './RoverPage';
 import { IAlbum, Lightbox, LightboxConfig } from 'ngx-lightbox';
 import { NgbDate } from '@ng-bootstrap/ng-bootstrap';
 import { ManifestPhoto } from '../services/beans/ManifestPhoto';
+import { InfiniteLoadingComponent } from '../infinite-loading/infinite-loading.component';
 
 @Component({
   selector: 'app-rover-page',
@@ -20,6 +21,7 @@ export class RoverPageComponent implements OnInit, OnDestroy {
   @ViewChild('photoHeader', {static: false}) photoHeader: ElementRef<HTMLElement>;
   @ViewChild('roverInfo', {static: false}) roverInfo: ElementRef<HTMLElement>;
   @ViewChild('gallery', {static: false}) gallery: ElementRef<HTMLElement>;
+  @ViewChild(InfiniteLoadingComponent, {static: false}) infiniteLoading;
 
   private queryDate: string; // NASA date format
   private rover: RoverPage;
@@ -172,6 +174,21 @@ export class RoverPageComponent implements OnInit, OnDestroy {
     }
     this.album = arr;
     this.albumSet = set;
+
+    // Prevent no images from showing
+    if (this.limit < 10) {
+      this.limit = 10;
+    }
+
+    // Prevent loaded images label from being more than total images
+    if (this.limit > this.album.length) {
+      this.limit = this.album.length;
+    }
+
+    // Refresh observer to ensure we fetch new images if we are scrolled all the way down
+    if (this.infiniteLoading !== undefined) {
+      this.infiniteLoading.refreshObserver();
+    }
   }
 
   updateSelectedDate(date: NgbDate): void {
@@ -185,6 +202,7 @@ export class RoverPageComponent implements OnInit, OnDestroy {
     this.nasaApiService.getRoverPhotosByEarthDate(this.rover.name, this.queryDate).subscribe(
       photos => {
         this.photos = photos;
+        this.limit = 10;  // Reset limit when going to new date
         this.refilterAlbum();
       },
       err => console.log(err),
