@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { Subscription, throwError } from 'rxjs';
 import { Manifest } from '../services/beans/Manifest';
 import { Photo } from '../services/beans/Photo';
@@ -17,6 +17,10 @@ import { ManifestPhoto } from '../services/beans/ManifestPhoto';
   styleUrls: ['./rover-page.component.scss']
 })
 export class RoverPageComponent implements OnInit, OnDestroy {
+  @ViewChild('photoHeader', {static: false}) photoHeader: ElementRef<HTMLElement>;
+  @ViewChild('roverInfo', {static: false}) roverInfo: ElementRef<HTMLElement>;
+  @ViewChild('gallery', {static: false}) gallery: ElementRef<HTMLElement>;
+
   private queryDate: string; // NASA date format
   private rover: RoverPage;
   loading = true;
@@ -31,8 +35,10 @@ export class RoverPageComponent implements OnInit, OnDestroy {
   // Stores the cameras available by name
   albumSet: Set<string> = new Set();
   selectedDate: NgbDate;
-  page = 1;
-  pageSize = 10;
+
+  limit = 10;
+  increment = 8;
+  headerHeight = 0;
 
   constructor(
     private route: ActivatedRoute,
@@ -200,5 +206,30 @@ export class RoverPageComponent implements OnInit, OnDestroy {
 
   close(): void {
     this.lightbox.close();
+  }
+
+  onScroll() {
+    if (this.limit < this.album.length) {
+      this.limit += this.increment;
+      if (this.limit > this.album.length) {
+        this.limit = this.album.length;
+      }
+    }
+  }
+
+  @HostListener('window:scroll', ['$event'])
+  onWindowScroll() {
+    if (this.roverInfo === undefined || this.photoHeader === undefined) {
+      return;
+    }
+
+    if (window.scrollY < this.roverInfo.nativeElement.offsetHeight) {
+      this.gallery.nativeElement.style.marginTop = '0px';
+      this.photoHeader.nativeElement.classList.remove('photo-header');
+    } else {
+      this.headerHeight = Math.max(this.headerHeight, this.photoHeader.nativeElement.offsetHeight);
+      this.gallery.nativeElement.style.marginTop = this.headerHeight + 'px';
+      this.photoHeader.nativeElement.classList.add('photo-header');
+    }
   }
 }

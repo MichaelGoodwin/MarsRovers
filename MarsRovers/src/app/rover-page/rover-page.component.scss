@@ -4,13 +4,7 @@
 }
 
 .rover-info{
-  background: url('../../assets/mars_surface_dust_black.png') no-repeat;
-  background-size: cover;
   min-height: 100vh;
-
-  // apply negative margin and offset it with padding to offset background image to match default image
-  margin-top: -60px;
-  padding-top: 60px;
 }
 
 #manifest-container{
@@ -32,10 +26,6 @@
 #description-container{
   max-width: 650px;
   margin: 0 auto;
-}
-
-.photo-gallery{
-  background: linear-gradient(to left, #200e08, #2f150d);
 }
 
 .day-date {
@@ -71,6 +61,22 @@
   }
 }
 
+.photo-gallery {
+	background: linear-gradient(to left, #200e08, #2f150d);
+}
+
+.photo-header{
+	position: fixed;
+	top: 60px;
+	z-index: 1;
+	background: linear-gradient(to left, #200e08, #2f150d);
+}
+
+.gallery-container {
+	padding-top: 25px;
+	margin-bottom: 50px;
+}
+
 .image-gallery{
   display: flex;
   flex-direction: row;
@@ -80,7 +86,7 @@
   max-width: 1200px;
   min-height: 250px;
   margin: 0 auto;
-  margin-bottom: 50px;
+  margin-bottom: 15px;
 
   .hover{
     background-color: black;
