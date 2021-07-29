@@ -64,12 +64,13 @@
         <div class="filters">
           <div class="camera-container"
             *ngFor="let camera of rover.cameras"
-            [ngbTooltip]="camera.full_name"
           >
+			<ng-template #tooltip>{{camera.full_name}}<br/><br/>{{camera.description}}</ng-template>
             <button class="btn pointer" 
               [ngClass]="cameras[camera.name] ? 'btn-success' : 'btn-danger'"
               [disabled]="!albumSet.has(camera.name)"
               (click)="updateCameraState(camera.name)"
+			  [ngbTooltip]="tooltip"
             >
               <i class="fas" [ngClass]="albumSet.has(camera.name) ? 
                 (cameras[camera.name] ? 'fa-check' : 'fa-times') : 'fa-ban'"></i>
