@@ -47,6 +47,9 @@
 
 .filters{
   margin-bottom: 10px;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
 
   .camera-container{
     display: inline-block;
@@ -62,6 +65,7 @@
 }
 
 .photo-gallery {
+	justify-content: center;
 	background: linear-gradient(to left, #200e08, #2f150d);
 }
 
@@ -70,6 +74,7 @@
 	top: 60px;
 	z-index: 1;
 	background: linear-gradient(to left, #200e08, #2f150d);
+	min-width: 100%;
 }
 
 .gallery-container {
